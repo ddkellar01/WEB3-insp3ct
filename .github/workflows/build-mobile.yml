@@ -2,31 +2,67 @@ name: Build Mobile Binaries
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
-  build-apk:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-      - run: flutter build apk --release
-      - uses: actions/upload-artifact@v4
-        with:
-          name: web3-insp3ct-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
-
   build-ios:
+    name: build-ios
     runs-on: macos-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.x'
-      - run: flutter build ios --release --no-codesign
-      - uses: actions/upload-artifact@v4
+          flutter-version: '3.19.6'
+          channel: 'stable'
+          cache: true
+
+      - name: Generate Missing Platform Files
+        run: flutter create . --platforms=ios,android
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build iOS Release (No Codesign)
+        run: flutter build ios --release --no-codesign
+
+      - name: Upload iOS Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: web3-insp3ct-ios-app
+          name: ios-build
           path: build/ios/iphoneos/Runner.app
+
+  build-apk:
+    name: build-apk
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6'
+          channel: 'stable'
+          cache: true
+
+      - name: Generate Missing Platform Files
+        run: flutter create . --platforms=ios,android
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build Android APK Release
+        run: flutter build apk --release
+
+      - name: Upload APK Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
