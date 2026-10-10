@@ -2,9 +2,9 @@ name: Build Mobile Binaries
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   build-ios:
@@ -23,7 +23,7 @@ jobs:
           cache: true
 
       - name: Generate Missing Platform Files
-        run: flutter create . --platforms=ios,android
+        run: flutter create . --platforms=ios,android --project-name=web3_insp3ct
 
       - name: Install Dependencies
         run: flutter pub get
@@ -53,7 +53,7 @@ jobs:
           cache: true
 
       - name: Generate Missing Platform Files
-        run: flutter create . --platforms=ios,android
+        run: flutter create . --platforms=ios,android --project-name=web3_insp3ct
 
       - name: Install Dependencies
         run: flutter pub get
