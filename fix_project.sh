@@ -1,14 +1,13 @@
 #!/bin/bash
-# Exit immediately if a command exits with a non-zero status
 set -e
 
-echo "=== Step 1: Cleaning Flutter build cache ==="
-flutter clean
+echo "Cleaning existing build artifacts and platform files..."
+rm -rf ios android .dart_tool build
 
-echo "=== Step 2: Regenerating missing iOS and Android platform files ==="
-flutter create . --platforms=ios,android
+echo "Regenerating platform files with correct project name (web3_insp3ct)..."
+flutter create . --platforms=ios,android --project-name=web3_insp3ct
 
-echo "=== Step 3: Fetching dependencies ==="
+echo "Getting pub dependencies..."
 flutter pub get
 
-echo "=== Project structure successfully updated! ==="
+echo "Project fix completed successfully!"
