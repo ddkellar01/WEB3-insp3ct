@@ -1,18 +1,34 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 android {
-    namespace "com.credkellar.web3insp3ct"
-    compileSdk 34
+    namespace "com.example.web3_insp3ct"
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 
     defaultConfig {
-        applicationId "com.credkellar.web3insp3ct"
-        minSdk 21
-        targetSdk 34
-        versionCode 1
-        versionName "1.0.0"
+        applicationId "com.example.web3_insp3ct"
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
     }
 
     buildTypes {
@@ -20,4 +36,8 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+}
+
+flutter {
+    source '../..'
 }
