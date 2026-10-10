@@ -1,0 +1,23 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+}
+
+android {
+    namespace "com.credkellar.web3insp3ct"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.credkellar.web3insp3ct"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
