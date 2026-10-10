@@ -22,8 +22,10 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Generate Missing Platform Files
-        run: flutter create . --platforms=ios,android --project-name=web3_insp3ct
+      - name: Clean & Regenerate Platform Files
+        run: |
+          rm -rf ios android
+          flutter create . --platforms=ios,android --project-name=web3_insp3ct --org=com.credkellar
 
       - name: Install Dependencies
         run: flutter pub get
@@ -52,11 +54,17 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Generate Missing Platform Files
-        run: flutter create . --platforms=ios,android --project-name=web3_insp3ct
+      - name: Clean & Regenerate Platform Files
+        run: |
+          rm -rf ios android
+          flutter create . --platforms=ios,android --project-name=web3_insp3ct --org=com.dddkellar01
 
       - name: Install Dependencies
         run: flutter pub get
+
+      - name: Configure Android Local Properties
+        run: |
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
 
       - name: Build Android APK Release
         run: flutter build apk --release
