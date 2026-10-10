@@ -1,0 +1,22 @@
+// Lightweight State Container for Intercepted Network Traffic
+class InspectorStore {
+  constructor() {
+    this.logs = [];
+    this.listeners = [];
+  }
+
+  addLog(entry) {
+    this.logs.push({ id: Date.now(), ...entry });
+    this.notify();
+  }
+
+  subscribe(listener) {
+    this.listeners.push(listener);
+  }
+
+  notify() {
+    this.listeners.forEach(fn => fn(this.logs));
+  }
+}
+
+export const store = new InspectorStore();
